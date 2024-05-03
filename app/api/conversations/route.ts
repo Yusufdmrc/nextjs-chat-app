@@ -1,6 +1,5 @@
 import getCurrentUser from "@/app/actions/getCurrentUser";
 import { NextResponse } from "next/server";
-import { use } from "react";
 
 export async function POST(request: Request) {
   try {
