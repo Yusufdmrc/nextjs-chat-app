@@ -7,7 +7,7 @@ import clsx from "clsx";
 import { useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { useCallback, useMemo } from "react";
-import { format } from "util";
+import { format } from "date-fns";
 
 interface ConversationBoxProps {
   data: FullConversationType;
@@ -73,12 +73,22 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
             <p className="text-md font-medium text-gray-900">
               {data.name || otherUser.name}
             </p>
-            {true && (
+            {lastMessage?.createdAt && (
               <p className="text-xs text-gray-400 font-light">
-                {format(new Date(), "hh:mm ")}
+                {format(new Date(lastMessage?.createdAt), "HH:mm")}
               </p>
             )}
           </div>
+          <p
+            className={clsx(
+              `
+          truncate text-sm 
+          `,
+              hasSeen ? "text-gray-500" : "text-black font-medium"
+            )}
+          >
+            {lastMessageText}
+          </p>
         </div>
       </div>
     </div>
