@@ -98,7 +98,7 @@ const AuthForm = () => {
           {variant === "REGISTER" && (
             <Input
               id="name"
-              label="Name"
+              label="İsim"
               register={register}
               errors={errors}
               disabled={isLoading}
@@ -106,7 +106,7 @@ const AuthForm = () => {
           )}
           <Input
             id="email"
-            label="Email adress"
+            label="Email"
             type="email"
             register={register}
             errors={errors}
@@ -114,7 +114,7 @@ const AuthForm = () => {
           />
           <Input
             id="password"
-            label="Password"
+            label="Şifre"
             type="password"
             register={register}
             errors={errors}
@@ -122,7 +122,7 @@ const AuthForm = () => {
           />
           <div>
             <Button disabled={isLoading} fullWidth type="submit">
-              {variant === "LOGIN" ? "Sign in" : "Register"}
+              {variant === "LOGIN" ? "Oturum aç" : "Kayıt Ol"}
             </Button>
           </div>
         </form>
@@ -133,7 +133,7 @@ const AuthForm = () => {
             </div>
             <div className="relative flex justify-center text-sm">
               <span className="bg-white px-2 text-gray-500">
-                Or continue with
+                Ya da devam edin
               </span>
             </div>
           </div>
@@ -159,11 +159,11 @@ const AuthForm = () => {
         >
           <div>
             {variant === "LOGIN"
-              ? "New to Messenger"
-              : "Already have an account?"}
+              ? "Max Chat'te yeni misin?"
+              : "Zaten bir hesabınız var mı?"}
           </div>
           <div onClick={toggleVariant} className="underline cursor-pointer">
-            {variant === "LOGIN" ? "Create an account" : "Login"}
+            {variant === "LOGIN" ? "Bir hesap oluşturun" : "Giriş"}
           </div>
         </div>
       </div>
