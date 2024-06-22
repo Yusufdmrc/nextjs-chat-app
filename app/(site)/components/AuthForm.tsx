@@ -1,17 +1,16 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
-import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
-import { BsGithub, BsGoogle } from "react-icons/bs";
-
-import Input from "../../components/inputs/Input";
-import Button from "@/app/components/Button";
-import AuthSocialButton from "./AuthSocialButton";
 import axios from "axios";
-import toast from "react-hot-toast";
 import { signIn, useSession } from "next-auth/react";
+import { useCallback, useEffect, useState } from "react";
+import { BsGithub, BsGoogle } from "react-icons/bs";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { AppRouterInstance } from "next/dist/shared/lib/app-router-context.shared-runtime";
+
+import Input from "@/app/components/inputs/Input";
+import AuthSocialButton from "./AuthSocialButton";
+import Button from "@/app/components/Button";
+import { toast } from "react-hot-toast";
 
 type Variant = "LOGIN" | "REGISTER";
 
@@ -23,7 +22,7 @@ const AuthForm = () => {
 
   useEffect(() => {
     if (session?.status === "authenticated") {
-      router.push("/users");
+      router.push("/conversations");
     }
   }, [session?.status, router]);
 
@@ -53,7 +52,21 @@ const AuthForm = () => {
     if (variant === "REGISTER") {
       axios
         .post("/api/register", data)
-        .then(() => signIn("credentials", data))
+        .then(() =>
+          signIn("credentials", {
+            ...data,
+            redirect: false,
+          })
+        )
+        .then((callback) => {
+          if (callback?.error) {
+            toast.error("Geçersiz kimlik!");
+          }
+
+          if (callback?.ok) {
+            router.push("/conversations");
+          }
+        })
         .catch(() => toast.error("Bir şeyler yanlış gitti!"))
         .finally(() => setIsLoading(false));
     }
@@ -65,11 +78,11 @@ const AuthForm = () => {
       })
         .then((callback) => {
           if (callback?.error) {
-            toast.error("Geçersiz kimlik");
+            toast.error("Geçersiz kimlik!");
           }
-          if (callback?.ok && !callback?.error) {
-            toast.success("Giriş yapıldı!");
-            router.push("/users");
+
+          if (callback?.ok) {
+            router.push("/conversations");
           }
         })
         .finally(() => setIsLoading(false));
@@ -82,10 +95,11 @@ const AuthForm = () => {
     signIn(action, { redirect: false })
       .then((callback) => {
         if (callback?.error) {
-          toast.error("Geçersiz kimlik");
+          toast.error("Geçersiz kimlik!");
         }
-        if (callback?.ok && !callback?.error) {
-          toast.success("Giriş yapıldı");
+
+        if (callback?.ok) {
+          router.push("/conversations");
         }
       })
       .finally(() => setIsLoading(false));
@@ -93,42 +107,62 @@ const AuthForm = () => {
 
   return (
     <div className="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
-      <div className="bg-white px-4 py-8 shadow sm:rounded-lg sm:px-10">
+      <div
+        className="
+        bg-white
+          px-4
+          py-8
+          shadow
+          sm:rounded-lg
+          sm:px-10
+        "
+      >
         <form className="space-y-6" onSubmit={handleSubmit(onSubmit)}>
           {variant === "REGISTER" && (
             <Input
-              id="name"
-              label="İsim"
+              disabled={isLoading}
               register={register}
               errors={errors}
-              disabled={isLoading}
+              required
+              id="name"
+              label="İsim"
             />
           )}
           <Input
-            id="email"
-            label="Email"
-            type="email"
+            disabled={isLoading}
             register={register}
             errors={errors}
-            disabled={isLoading}
+            required
+            id="email"
+            label="Mail Adresi"
+            type="email"
           />
           <Input
+            disabled={isLoading}
+            register={register}
+            errors={errors}
+            required
             id="password"
             label="Şifre"
             type="password"
-            register={register}
-            errors={errors}
-            disabled={isLoading}
           />
           <div>
             <Button disabled={isLoading} fullWidth type="submit">
-              {variant === "LOGIN" ? "Oturum aç" : "Kayıt Ol"}
+              {variant === "LOGIN" ? "Oturum Aç" : "Kayıt Ol"}
             </Button>
           </div>
         </form>
+
         <div className="mt-6">
           <div className="relative">
-            <div className="absolute inset-0 flex items-center">
+            <div
+              className="
+                absolute 
+                inset-0 
+                flex 
+                items-center
+              "
+            >
               <div className="w-full border-t border-gray-300" />
             </div>
             <div className="relative flex justify-center text-sm">
@@ -137,33 +171,36 @@ const AuthForm = () => {
               </span>
             </div>
           </div>
+
           <div className="mt-6 flex gap-2">
             <AuthSocialButton
               icon={BsGithub}
-              onClick={() => {
-                socialAction("github");
-              }}
+              onClick={() => socialAction("github")}
             />
             <AuthSocialButton
               icon={BsGoogle}
-              onClick={() => {
-                socialAction("google");
-              }}
+              onClick={() => socialAction("google")}
             />
           </div>
         </div>
         <div
           className="
-        flex gap-2 justify-center text-sm mt-6 px-2 text-gray-500
-        "
+            flex 
+            gap-2 
+            justify-center 
+            text-sm 
+            mt-6 
+            px-2 
+            text-gray-500
+          "
         >
           <div>
             {variant === "LOGIN"
-              ? "Max Chat'te yeni misin?"
+              ? "Max Chat'de yeni misiniz?"
               : "Zaten bir hesabınız var mı?"}
           </div>
           <div onClick={toggleVariant} className="underline cursor-pointer">
-            {variant === "LOGIN" ? "Bir hesap oluşturun" : "Giriş"}
+            {variant === "LOGIN" ? "Yeni bir hesap oluştur" : "Giriş Yap"}
           </div>
         </div>
       </div>
