@@ -5,6 +5,7 @@ Bu proje, React, Next.js, Mongo.db Prisma, Zustand ve Pusher kullanarak gerçek 
 ## Özellikler
 
 - Gerçek zamanlı mesajlaşma
+- Metin ve görsel tabanlı mesajlaşma
 - Kullanıcı profili yönetimi
 - Grup sohbetleri oluşturma ve yönetme
 - Kullanıcıların online olup olmama durumlarını gösterme
@@ -12,12 +13,12 @@ Bu proje, React, Next.js, Mongo.db Prisma, Zustand ve Pusher kullanarak gerçek 
 
 ## Kullanılan Teknolojiler
 
-- **Next.js**: React tabanlı bir çerçevedir.
+- **Next.js**: React tabanlı bir framework'tür.
 - **Mongo.db**:NoSQL türünde bir veritabanı yönetim sistemidir.
 - **Prisma**: Node.js ve TypeScript için ORM.
-- **Zustand**: Durum yönetimi kütüphanesidir.
+- **Zustand**: State yönetim kütüphanesidir.
 - **Pusher**: Gerçek zamanlı bildirimler ve olay yönetimi sağlayan bir hizmettir.
-- **Tailwind CSS**: CSS yardımcı sınıfı tabanlı bir CSS çerçevesidir.
+- **Tailwind CSS**: CSS yardımcı sınıfı tabanlı bir CSS framework'tür.
 - **Next-Auth**: Next.js için kimlik doğrulama çözümüdür.
 - **Cloudinary**: Medya yönetimi ve resim/video yükleme servisidir.
 
